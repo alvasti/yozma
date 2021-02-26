@@ -57,8 +57,8 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfo("Simple rest api", "", "", "", new Contact("Created By  yozma Service Group JAVA TEAM",
-                "https://yozma.org/", "javateam@yozma.uz"), "", "", Collections.emptyList());
+        return new ApiInfo("Simple rest api", "", "", "", new Contact("Created By  Alvasti Group",
+                "https://yozma.alvatry.uz/", "javateam@yozma.uz"), "", "", Collections.emptyList());
     }
 
 }

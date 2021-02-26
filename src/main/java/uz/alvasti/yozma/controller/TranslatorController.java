@@ -1,11 +1,9 @@
 package uz.alvasti.yozma.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import uz.alvasti.yozma.entity.TranslateType;
+import uz.alvasti.yozma.payload.TranslateRequest;
 import uz.alvasti.yozma.payload.TranslateResponse;
 import uz.alvasti.yozma.service.TranslatorService;
 
@@ -21,12 +19,11 @@ public class TranslatorController {
 
     @PostMapping
     public ResponseEntity<TranslateResponse> translate(
-            @RequestParam("type") TranslateType translateType,
-            @RequestParam("text") String text) {
+            @RequestBody TranslateRequest request) {
 
         return ResponseEntity.ok(
                 TranslateResponse.of(
-                        translatorService.translate(translateType, text)
+                        translatorService.translate(request.getType(), request.getText())
                 ));
     }
 }
