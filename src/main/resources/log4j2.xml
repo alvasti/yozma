@@ -59,17 +59,18 @@
                             eventEol="true"
                             complete="false"
                             properties="false"
-                            locationInfo="true"
+                            locationInfo="false"
                             includeStacktrace="true"
                             includeTimeMillis="true"
                             stacktraceAsString="true"
-                            objectMessageAsJsonObject="true">
+                            objectMessageAsJsonObject="true"
+                            charset="UTF-8">
 
 <!--                        <KeyValuePair key="APP" value="${spring:spring.application.name}"/>-->
                         <!--                <KeyValuePair key="INSTANCE_TENGET" value="${spring:eureka.instance.instance-id}"/>-->
-                        <KeyValuePair key="x-correlation-id" value="$${ctx:x-correlation-id}"/>
-                        <KeyValuePair key="USERNAME" value="$${ctx:USERNAME}"/>
-                        <KeyValuePair key="USERID" value="$${ctx:USERID}"/>
+<!--                        <KeyValuePair key="x-correlation-id" value="$${ctx:x-correlation-id}"/>-->
+<!--                        <KeyValuePair key="USERNAME" value="$${ctx:USERNAME}"/>-->
+<!--                        <KeyValuePair key="USERID" value="$${ctx:USERID}"/>-->
 
                     </JsonLayout>
 
