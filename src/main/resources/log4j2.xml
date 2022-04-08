@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration packages="" name="Log4jTest" status="INFO" monitorInterval="30">
+
+    <!--    <Properties>-->
+    <!--&lt;!&ndash;        <Property name="appLog">application.log</Property>&ndash;&gt;-->
+    <!--        <Property name="CONSOLE_PATTERN">%replace{%highlight{%d{HH:mm:ss.SSS} [%t] %-5level %l - %msg - %ex %n}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=yellow, DEBUG=green bold, TRACE=blue}}{\r?\n}{↵}\n</Property>-->
+    <!--        <Property name="PATTERN">%replace{APP_TENGET:-${spring:spring.application.name} INSTANCE_TENGET:-${spring:eureka.instance.instance-id} TIME_TENGET:-%d{ISO8601} THREAD_TENGET:-%t LEVEL_TENGET:-%p LOCATION_TENGET:-%l MESSAGE_TENGET:-%m USERNAME_TENGET:-%K{USERNAME} REQUEST_TENGET:-%K{REQUEST} LOGID_TENGET:-%K{LOGID} METHOD_TENGET:-%K{METHOD} URI_TENGET:-%K{URI} INFO_TENGET:-%K{INFO} HEADERS_TENGET:-%K{HEADERS} BODY_TENGET:-%K{BODY} ERROR_TENGET:-%ex%n}{\r?\n}{↵}\n</Property>-->
+    <!--    </Properties>-->
+
+    <Appenders>
+
+        <!-- For logging to console -->
+<!--        <Console name="ConsoleJson" target="SYSTEM_OUT">-->
+<!--            <JsonLayout-->
+<!--                    compact="true"-->
+<!--                    eventEol="true"-->
+<!--                    complete="false"-->
+<!--                    properties="false"-->
+<!--                    locationInfo="true"-->
+<!--                    includeStacktrace="true"-->
+<!--                    includeTimeMillis="true"-->
+<!--                    stacktraceAsString="true"-->
+<!--                    objectMessageAsJsonObject="true">-->
+
+<!--                <KeyValuePair key="APP_TENGET" value="${spring:spring.application.name}"/>-->
+<!--&lt;!&ndash;                <KeyValuePair key="INSTANCE_TENGET" value="${spring:eureka.instance.instance-id}"/>&ndash;&gt;-->
+<!--                <KeyValuePair key="x-correlation-id" value="$${ctx:x-correlation-id}"/>-->
+<!--                <KeyValuePair key="USERNAME" value="$${ctx:USERNAME}"/>-->
+<!--                <KeyValuePair key="USERID" value="$${ctx:USERID}"/>-->
+<!--                <KeyValuePair key="DEVICE-ID" value="$${ctx:DEVICE-ID}"/>-->
+
+
+<!--            </JsonLayout>-->
+
+<!--            &lt;!&ndash;            <PatternLayout disableAnsi="false"&ndash;&gt;-->
+<!--            &lt;!&ndash;                           pattern="${PATTERN}"/>&ndash;&gt;-->
+<!--        </Console>-->
+
+<!--        <Console name="ConsoleLocal" target="SYSTEM_OUT">-->
+
+<!--        </Console>-->
+
+        <!--        Socket-->
+        <!--        <Socket name="logstash-socket-appender"-->
+        <!--                host="${spring:logging.log4j2.host}"-->
+        <!--                port="${spring:logging.log4j2.port}"-->
+        <!--                reconnectionDelayMillis="3000">-->
+        <!--            &lt;!&ndash;           / <param name="Threshold" value="INFO"/>&ndash;&gt;-->
+        <!--            &lt;!&ndash;            <SerializedLayout />&ndash;&gt;-->
+        <!--            <PatternLayout pattern="${PATTERN}"/>-->
+        <!--        </Socket>-->
+
+<!--                File-->
+                <RollingFile ignoreExceptions="false" name="rolling-file"
+                             filePattern="logs/app/app-%d{yyyy-MM-DD-HH:mm}-%i.log"
+                             fileName="logs/app.log">
+                    <JsonLayout
+                            compact="true"
+                            eventEol="true"
+                            complete="false"
+                            properties="false"
+                            locationInfo="true"
+                            includeStacktrace="true"
+                            includeTimeMillis="true"
+                            stacktraceAsString="true"
+                            objectMessageAsJsonObject="true">
+
+<!--                        <KeyValuePair key="APP" value="${spring:spring.application.name}"/>-->
+                        <!--                <KeyValuePair key="INSTANCE_TENGET" value="${spring:eureka.instance.instance-id}"/>-->
+                        <KeyValuePair key="x-correlation-id" value="$${ctx:x-correlation-id}"/>
+                        <KeyValuePair key="USERNAME" value="$${ctx:USERNAME}"/>
+                        <KeyValuePair key="USERID" value="$${ctx:USERID}"/>
+
+                    </JsonLayout>
+
+                    <Policies>
+                        <TimeBasedTriggeringPolicy/>
+                        <SizeBasedTriggeringPolicy size="15 Mb"/>
+                    </Policies>
+                </RollingFile>
+
+        <!--        <RollingFile ignoreExceptions="false" name="exception-file"-->
+        <!--                     filePattern="logs/error/error-%d{yyyy-MM-DD-HH:mm}-%i.log"-->
+        <!--                     fileName="logs/error.log">-->
+        <!--            <PatternLayout-->
+        <!--                    pattern="${PATTERN}"/>-->
+        <!--            <Policies>-->
+        <!--                <TimeBasedTriggeringPolicy/>-->
+        <!--                <SizeBasedTriggeringPolicy size="1 Mb"/>-->
+        <!--            </Policies>-->
+
+        <!--            <LevelRangeFilter minLevel="ERROR" maxLevel="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>-->
+
+        <!--            &lt;!&ndash;            <Filters>&ndash;&gt;-->
+        <!--&lt;!&ndash;                <ThresholdFilter level="ERROR"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;                <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;            </Filters>&ndash;&gt;-->
+        <!--        </RollingFile>-->
+
+        <!--        <Failover name="Failover" primary="logstash-socket-appender">-->
+        <!--            <Failovers>-->
+        <!--                <AppenderRef ref="rolling-file"/>-->
+        <!--            </Failovers>-->
+        <!--        </Failover>-->
+
+    </Appenders>
+
+    <Loggers>
+
+<!--        dev and prod-->
+        <AsyncRoot level="INFO" additivity="false">
+            <!--            <AppenderRef ref="exception-file"/>-->
+            <AppenderRef ref="rolling-file"/>
+            <!--            <AppenderRef ref="rolling-file"/>-->
+        </AsyncRoot>
+
+<!--        <AsyncLogger name="uz.tune.tenge" level="DEBUG" includeLocation="true" additivity="false">-->
+<!--            &lt;!&ndash;            <AppenderRef ref="rolling-file"/>&ndash;&gt;-->
+<!--            &lt;!&ndash;            <AppenderRef ref="exception-file"/>&ndash;&gt;-->
+<!--            <AppenderRef ref="ConsoleJson"/>-->
+<!--        </AsyncLogger>-->
+<!--&lt;!&ndash;        <AsyncLogger name="org.springframework.web" level="DEBUG" includeLocation="true" additivity="false">&ndash;&gt;-->
+<!--&lt;!&ndash;            &lt;!&ndash;            <AppenderRef ref="rolling-file"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;            &lt;!&ndash;            <AppenderRef ref="exception-file"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;            <AppenderRef ref="ConsoleJson"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        </AsyncLogger>&ndash;&gt;-->
+
+<!--        <AsyncLogger name="io.kubernetes" level="WARN" includeLocation="true" additivity="false">-->
+<!--            &lt;!&ndash;            <AppenderRef ref="rolling-file"/>&ndash;&gt;-->
+<!--            &lt;!&ndash;            <AppenderRef ref="exception-file"/>&ndash;&gt;-->
+<!--            <AppenderRef ref="ConsoleJson"/>-->
+<!--        </AsyncLogger>-->
+
+
+<!--        local-->
+<!--        <AsyncRoot level="DEBUG" additivity="false">-->
+<!--            &lt;!&ndash;            <AppenderRef ref="exception-file"/>&ndash;&gt;-->
+<!--            <AppenderRef ref="ConsoleLocal"/>-->
+<!--            &lt;!&ndash;            <AppenderRef ref="rolling-file"/>&ndash;&gt;-->
+<!--        </AsyncRoot>-->
+
+<!--        <AsyncLogger name="org.apache.http" level="DEBUG" includeLocation="true" additivity="false">-->
+<!--            &lt;!&ndash;            <AppenderRef ref="rolling-file"/>&ndash;&gt;-->
+<!--            &lt;!&ndash;            <AppenderRef ref="exception-file"/>&ndash;&gt;-->
+<!--            <AppenderRef ref="ConsoleJson"/>-->
+<!--        </AsyncLogger>-->
+    </Loggers>
+
+</Configuration>
